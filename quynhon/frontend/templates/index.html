@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khám Phá Quy Nhơn – Phượt biển 4N3Đ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="nav" id="nav">
+  <a href="#home" class="brand">
+    <svg viewBox="0 0 100 70" width="74" aria-hidden="true"><path d="M4 66 L70 4 L52 42Z" fill="#d6483b"/><path d="M52 42 L70 4 L58 56Z" fill="#a8302b"/><path d="M20 58 C40 50 60 56 98 36" stroke="#f1d9a6" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
+    <span><b class="b1">Explore</b><b class="b2">Quy Nhơn</b></span>
+  </a>
+  <button class="burger" id="burger" aria-label="Mở menu"><i></i><i></i><i></i></button>
+  <nav id="menu">
+    <a href="#home">Trang chủ</a><a href="#lich-trinh">Lịch trình</a><a href="#diem-den">Điểm đến</a><a href="#tu-van">Tư vấn</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="shimmer"></div>
+  <div class="hero-in">
+    <h1>Quy Nhơn Phượt<br>Biển 4D3N</h1>
+    <p>Hành trình chinh phục những cung đường ven biển đẹp nhất</p>
+    <a href="#lich-trinh" class="btn">Bắt Đầu Hành Trình</a>
+  </div>
+  <svg class="waves" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+    <path class="w1" d="M0 70 C240 10 480 130 720 70 S1200 10 1440 70 V160 H0Z"/>
+    <path class="w2" d="M0 100 C240 150 480 50 720 100 S1200 150 1440 100 V160 H0Z"/>
+  </svg>
+</section>
+
+<section class="plan" id="lich-trinh">
+  <div class="wrap">
+    <h2 class="reveal">Lịch Trình 4 Ngày 3 Đêm</h2>
+    <div class="days">
+      <article class="day reveal"><h3>Ngày 1: Khởi hành &amp; Danh thắng Ghềnh Ráng-Tiên Sa</h3><p>Chuyến bay từ TP. Hồ Chí Minh đến Quy Nhơn. Tham quan danh thắng Ghềnh Ráng – Tiên Sa, thưởng thức đặc sản gà chỉ, sau đó về khách sạn nghỉ ngơi hoặc tự do khám phá Quy Nhơn về đêm.</p></article>
+      <hr>
+      <article class="day reveal"><h3>Ngày 2: Kỳ Co-Eo Gió &amp; Làng chài Nhơn Lý</h3><p>Ăn sáng, khởi hành tham quan Eo Gió, Giếng Tiên, con đường sách, tịnh xá Ngọc Hoà và di chuyển đến Kỳ Co dùng bữa trưa. Vui chơi, tắm biển và chụp ảnh tại Kỳ Co, ngắm hoàng hôn ở làng chài Nhơn Lý, thưởng thức hải sản tại Bãi Xếp.</p></article>
+      <hr>
+      <article class="day reveal"><h3>Ngày 3: Phượt cung đường biển Quy Nhơn-Phú Yên</h3><p>Thưởng thức đặc sản bún rạm, khởi hành khám phá cung đường Quy Nhơn-Phú Yên, tham quan nhà thờ Mằng Lăng, Gành Đá Đĩa, Đầm Ô Loan, Chùa Thanh Lương, Tháp Nghinh Phong. Dùng bữa tối với đặc sản mắt cá ngừ đại dương tại Tuy Hoà.</p></article>
+      <hr>
+      <article class="day reveal"><h3>Ngày 4: Mũi Điện-Vịnh Vũng Rô-TP.HCM</h3><p>Khám phá cung đường biển Phú Yên, tham quan Bãi Tiên, Mũi Điện-Bãi Môn, thưởng thức hải sản tại Vịnh Vũng Rô và ghé thăm di tích Bến tàu Không số. Trở về Tuy Hoà, kết thúc hành trình trở về TP.HCM.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="spots" id="diem-den">
+  <div class="wrap">
+    <h2 class="reveal">Điểm đến nổi bật</h2>
+    <div class="spot-grid">
+      <article class="spot reveal"><div class="img"><img src="{{ url_for('image', filename='kyco-eogio.jpg') }}" alt="Đường đi bộ ven vách đá Eo Gió"></div>
+        <div class="box"><h3>Kỳ Co &amp; Eo Gió</h3><p>Thiên đường biển xanh giữa đại dương</p><a href="#" class="more">Xem thêm</a>
+        <div class="detail"><p>Eo Gió có con đường đi bộ uốn lượn ôm vách đá, đẹp nhất lúc sáng sớm. Từ đó đi cano ra Kỳ Co để tắm biển, lặn ngắm san hô.</p></div></div></article>
+      <article class="spot reveal"><div class="img"><img src="{{ url_for('image', filename='ghenh-rang.jpg') }}" alt="Bãi đá Ghềnh Ráng"></div>
+        <div class="box"><h3>Ghềnh Ráng-Tiên Sa</h3><p>Dấu ấn thi ca bên biển xanh</p><a href="#" class="more">Xem thêm</a>
+        <div class="detail"><p>Bãi đá tròn nhẵn bên sóng vỗ, gắn với mộ thi sĩ Hàn Mặc Tử. Nơi lý tưởng để dạo chiều và ngắm biển.</p></div></div></article>
+      <article class="spot reveal"><div class="img"><img src="{{ url_for('image', filename='mui-dien.jpg') }}" alt="Ngọn hải đăng Mũi Điện"></div>
+        <div class="box"><h3>Mũi Điện-Vịnh Vũng Rô</h3><p>Đón bình minh nơi cực Đông Tổ Quốc</p><a href="#" class="more">Xem thêm</a>
+        <div class="detail"><p>Ngọn hải đăng Mũi Điện là điểm đón ánh bình minh đầu tiên trên đất liền Việt Nam. Gần đó là Vịnh Vũng Rô và di tích Bến tàu Không số.</p></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="advice" id="tu-van">
+  <div class="wrap">
+    <h2 class="reveal">Tư Vấn Chuyến Đi</h2>
+    {% with messages = get_flashed_messages() %}{% if messages %}<p role="alert" style="font-weight:600;margin-bottom:1rem">{{ messages[0] }}</p>{% endif %}{% endwith %}
+    <form class="reveal" id="form" action="{{ url_for('tu_van') }}" method="post">
+      <input required name="ten" maxlength="100" placeholder="Họ và tên" aria-label="Họ và tên">
+      <input required name="sdt" type="tel" maxlength="20" placeholder="Số điện thoại" aria-label="Số điện thoại">
+      <textarea name="loi_nhan" maxlength="1000" rows="3" placeholder="Bạn muốn đi mấy người, vào tháng nào?" aria-label="Lời nhắn"></textarea>
+      <button class="btn" type="submit">Gửi yêu cầu</button>
+    </form>
+  </div>
+</section>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

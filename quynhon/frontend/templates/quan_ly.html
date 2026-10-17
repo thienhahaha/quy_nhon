@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theo dõi yêu cầu tư vấn</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"Segoe UI",Arial,sans-serif;background:#f3f5ff;color:#111;font-size:18px;line-height:1.5}
+header{background:#12234f;color:#fff;padding:1rem 5vw;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+h1{font-size:1.5rem}
+.tt{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.12);padding:.45rem 1rem;border-radius:99px;font-size:1rem}
+.cham{width:12px;height:12px;border-radius:50%;background:#35d07f;animation:nhip 1.6s infinite}
+.tt.loi .cham{background:#ff5c4d;animation:none}
+@keyframes nhip{50%{box-shadow:0 0 0 7px rgba(53,208,127,0)}0%{box-shadow:0 0 0 0 rgba(53,208,127,.7)}}
+main{max-width:1000px;margin:auto;padding:1.5rem 5vw 4rem}
+.thanh{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin-bottom:1.2rem}
+.tong{font-size:1.25rem;font-weight:700;flex:1 1 220px}
+input[type=search]{font:inherit;padding:.7rem 1rem;border:2px solid #12234f;border-radius:12px;flex:1 1 220px}
+.nut{font:inherit;font-weight:700;text-decoration:none;padding:.7rem 1.2rem;border-radius:12px;border:2px solid #12234f;color:#12234f;background:#fff;cursor:pointer}
+.nut:hover{background:#12234f;color:#fff}
+#bao{display:none;background:#fff3c4;border:2px solid #f0b429;padding:.8rem 1rem;border-radius:12px;margin-bottom:1rem;font-weight:700}
+.luoi{display:grid;gap:1rem}
+.the{background:#fff;border-radius:16px;padding:1.1rem 1.4rem;border-left:8px solid #2a4cff;box-shadow:0 4px 14px rgba(18,35,79,.1)}
+.the.moi{animation:sang 4s ease-out}
+@keyframes sang{0%,40%{background:#fff3c4}100%{background:#fff}}
+.dau{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.4rem;color:#555;font-size:.95rem}
+.ten{font-size:1.4rem;font-weight:800;margin:.2rem 0}
+.goi{display:inline-block;margin:.3rem 0;padding:.5rem 1.1rem;border-radius:99px;background:#2a4cff;color:#fff;text-decoration:none;font-weight:700}
+.goi:hover{background:#1636d6}
+.nhan{margin-top:.4rem;white-space:pre-wrap;word-break:break-word}
+.trong{text-align:center;color:#555;padding:3rem 1rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>Theo dõi yêu cầu tư vấn</h1>
+  <span class="tt" id="tt"><span class="cham"></span><span id="ttchu">Đang kết nối...</span></span>
+</header>
+<main>
+  <div id="bao" role="status"></div>
+  <div class="thanh">
+    <div class="tong">Tổng cộng: <span id="tong">0</span> yêu cầu</div>
+    <input type="search" id="tim" placeholder="Tìm theo tên, số điện thoại..." aria-label="Tìm kiếm">
+    <a class="nut" href="/xuat-csv">Tải về Excel</a>
+    <a class="nut" href="/dang-xuat">Đăng xuất</a>
+  </div>
+  <div class="luoi" id="ds"></div>
+</main>
+<script>
+const KHOANG = 5000; // làm mới mỗi 5 giây
+const $ = id => document.getElementById(id);
+let danhSach = [], maxId = 0, lanDau = true, tatBao;
+
+function tao(tag, cls, text){
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;   // textContent: an toàn, không chạy HTML người dùng nhập
+  return e;
+}
+
+function ve(moiIds){
+  const q = $('tim').value.trim().toLowerCase();
+  const ds = $('ds'); ds.replaceChildren();
+  const loc = danhSach.filter(x => !q || (x.ten + ' ' + x.sdt + ' ' + x.loi_nhan).toLowerCase().includes(q));
+  if (!loc.length){
+    ds.append(tao('p', 'trong', danhSach.length ? 'Không tìm thấy kết quả.' : 'Chưa có yêu cầu nào. Trang sẽ tự cập nhật khi có người gửi.'));
+    return;
+  }
+  for (const x of loc){
+    const the = tao('article', 'the' + (moiIds.has(x.id) ? ' moi' : ''));
+    const dau = tao('div', 'dau'); dau.append(tao('span', '', 'Mã #' + x.id), tao('span', '', x.tao_luc));
+    const goi = tao('a', 'goi', '📞 ' + x.sdt); goi.href = 'tel:' + x.sdt.replace(/[^\d+]/g, '');
+    the.append(dau, tao('div', 'ten', x.ten), goi);
+    if (x.loi_nhan) the.append(tao('p', 'nhan', x.loi_nhan));
+    ds.append(the);
+  }
+}
+
+function trangThai(tot){
+  $('tt').classList.toggle('loi', !tot);
+  $('ttchu').textContent = tot
+    ? 'Đang cập nhật trực tiếp · ' + new Date().toLocaleTimeString('vi-VN')
+    : 'Mất kết nối, đang thử lại...';
+}
+
+async function tai(){
+  try{
+    const r = await fetch('/api/tu-van', {cache: 'no-store'});
+    if (r.status === 401){ location.href = '/dang-nhap'; return; }
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const moiIds = new Set(lanDau ? [] : d.ds.filter(x => x.id > maxId).map(x => x.id));
+    if (d.ds.length) maxId = Math.max(maxId, d.ds[0].id);
+    lanDau = false;
+    danhSach = d.ds;
+    $('tong').textContent = d.tong;
+    ve(moiIds);
+    if (moiIds.size){
+      const bao = $('bao'); bao.style.display = 'block';
+      bao.textContent = 'Có ' + moiIds.size + ' yêu cầu mới!';
+      clearTimeout(tatBao); tatBao = setTimeout(() => bao.style.display = 'none', 8000);
+    }
+    trangThai(true);
+  }catch(e){ trangThai(false); }
+}
+
+$('tim').addEventListener('input', () => ve(new Set()));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) tai(); });
+tai(); setInterval(tai, KHOANG);
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cảm ơn bạn – Khám Phá Quy Nhơn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<section class="advice" style="min-height:100vh;display:grid;align-items:center">
+  <div class="wrap">
+    <h2>Cảm ơn bạn!</h2>
+    <article class="day" style="max-width:620px;color:var(--ink)">
+      <h3>Yêu cầu #{{ data.id }} đã được ghi nhận</h3>
+      <p><b>Họ tên:</b> {{ data.ten }}</p>
+      <p><b>Số điện thoại:</b> {{ data.sdt }}</p>
+      {% if data.loi_nhan %}<p><b>Lời nhắn:</b> {{ data.loi_nhan }}</p>{% endif %}
+      <p style="margin-top:1rem">Chúng tôi sẽ liên hệ với bạn sớm nhất.</p>
+    </article>
+    <p style="margin-top:2rem"><a href="{{ url_for('index') }}" class="btn">Về trang chủ</a></p>
+  </div>
+</section>
+</body>
+</html>
